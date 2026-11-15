@@ -95,13 +95,15 @@ footer{color:var(--mute);font-size:.8rem;text-align:center;margin-top:20px}
   </div>
   <div class="feat">
     <div><b>🔒 Private</b>Everything runs on your device. Nothing is uploaded.</div>
-    <div><b>🎨 Any background</b>Transparent, solid colors or your own color.</div>
+    <div><b>🎨 Any background</b>Transparent, solid colors, gradients or your own photo.</div>
     <div><b>📱 Web &amp; Android</b>Use it in any browser or install the app.</div>
   </div>
   <div class="card" id="get">
     <strong>Get the Android app</strong>
     <p>Download the APK, open it, and allow “install from unknown sources” if asked. On iPhone, open this page in Safari → Share → Add to Home Screen.</p>
     <div class="cta" style="margin-top:12px"><a class="btn" id="apk2" href="#">Download APK</a></div>
+    <p id="apkinfo"></p>
+    <p>Updating? Delete any older Kutout APK from your Downloads first, so you install the newest one.</p>
   </div>
   <footer>© 2026 Kart Production. All rights reserved.<br>Powered by @imgly/background-removal (AGPL-3.0) · <a id="src" href="https://github.com/imgly/background-removal-js" style="color:inherit">Source</a></footer>
 </main>
@@ -111,7 +113,19 @@ const $ = s => document.querySelector(s);
 // APK link: auto-detected on GitHub Pages (user.github.io/repo). Otherwise set it manually below.
 let APK_URL='https://github.com/kartproduction/Kutout/releases/latest/download/Kutout.apk';  // e.g. 'https://github.com/USER/REPO/releases/latest/download/Kutout.apk'
 $('#src').href='https://github.com/kartproduction/Kutout';
-if(APK_URL){$('#apk2').href=APK_URL;$('#apk').href=APK_URL;$('#apk').removeAttribute('data-x')}
+if(APK_URL){$('#apk2').href=APK_URL;$('#apk').href=APK_URL}
+// Always link to the newest release (shows its version so you can tell it is the new one)
+fetch('https://api.github.com/repos/kartproduction/Kutout/releases/latest').then(r=>r.ok?r.json():null).then(j=>{
+  if(!j)return;
+  const list=j.assets||[];
+  const a=list.find(x=>/^Kutout-v.*\.apk$/.test(x.name))||list.find(x=>x.name.endsWith('.apk'));
+  if(!a)return;
+  APK_URL=a.browser_download_url;
+  $('#apk2').href=APK_URL;$('#apk').href=APK_URL;
+  $('#apk').textContent='Download Android app ('+j.tag_name+')';
+  $('#apk2').textContent='Download APK ('+j.tag_name+')';
+  $('#apkinfo').textContent='Latest version '+j.tag_name+' · released '+new Date(j.published_at).toLocaleDateString();
+}).catch(()=>{});
 if(window.Capacitor?.isNativePlatform?.()){document.querySelector('.cta').style.display='none';$('#get').style.display='none'}
 const drop=$('#drop'), file=$('#file'), img=$('#img'), msg=$('#msg'), bar=$('#bar'), fill=$('#bar i');
 let cutout=null, bgColor='', origName='image';
