@@ -1,0 +1,37 @@
+Kutout
+Copyright (c) 2026 Kart Production. All rights reserved except as granted below.
+
+The code of Kutout is licensed under the GNU Affero General Public License
+v3.0 (AGPL-3.0); see the LICENSE file. You may use, share and modify it under
+those terms: any copy or modified version must stay open source under the same
+license, keep this copyright notice, and link to its source. Viewing the
+website or its source code does not grant any other permission, and you may not
+offer Kutout (or anything derived from it) under any other name, publisher or
+identity.
+
+You may share a link to the website.
+
+The official website is at:
+https://kartproduction.github.io/Kutout/
+
+Any copy found elsewhere is not authorized and is not connected to Kart
+Production.
+
+NAMES AND BRANDS
+The names Kutout, Kart Production, Kasign, Kartory, Kalendar by Kasign,
+Kauncher, The Change Voice and Hope For A Change, and their logos, are not
+licensed under the AGPL and may not be used for any other website, app, product
+or service without written permission.
+
+THIRD-PARTY MATERIAL
+This notice covers only the original work created by Kart Production.
+Third-party components remain under their own licenses and rights holders, and
+nothing here grants any rights to them. In particular, background removal is
+powered by @imgly/background-removal (AGPL-3.0, (c) IMG.LY GmbH).
+
+To request permission, contact Kart Production through the GitHub profile:
+https://github.com/kartproduction
+
+NO WARRANTY
+The website, app and their contents are provided "as is", without warranty of
+any kind, express or implied.
