@@ -15,13 +15,20 @@ jobs:
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: 17 }
       - run: npm install
-      - run: mkdir -p www && cp index.html www/
+      - run: mkdir -p www && cp index.html icon-192.png icon-512.png apple-touch-icon.png manifest.webmanifest www/
       - run: npx cap add android
+      - run: pip install pillow
+      - run: python make_icons.py
+      - run: test -f android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_background.png && echo "Kutout icons OK"
       - run: npx cap sync android
       - run: cd android && chmod +x gradlew && ./gradlew assembleDebug
-      - run: cp android/app/build/outputs/apk/debug/app-debug.apk Kutout.apk
+      - run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk Kutout.apk
+          cp Kutout.apk Kutout-v${{ github.run_number }}.apk
       - uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ github.run_number }}
           name: Kutout v${{ github.run_number }}
-          files: Kutout.apk
+          files: |
+            Kutout.apk
+            Kutout-v${{ github.run_number }}.apk
