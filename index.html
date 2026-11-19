@@ -7,6 +7,11 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#5b5bf0">
+<meta name="description" content="Kutout removes image backgrounds free, privately on your device. Touch-up brushes, gradients, photo backgrounds, shadows and export presets. Web and Android.">
+<meta property="og:type" content="website"><meta property="og:title" content="Kutout – Free Background Remover">
+<meta property="og:description" content="Remove image backgrounds in seconds. Free, private, on-device. Web and Android.">
+<meta property="og:image" content="https://kartproduction.github.io/kutout/og-image.png"><meta property="og:url" content="https://kartproduction.github.io/kutout/">
+<meta name="twitter:card" content="summary_large_image">
 <title>Kutout – Free Background Remover (Web &amp; Android)</title>
 <style>
 :root{--bg:#f6f7fb;--card:#fff;--text:#161a23;--mute:#6b7280;--accent:#5b5bf0;--line:#e3e6ee}
@@ -46,6 +51,13 @@ a.btn.alt{background:transparent;color:var(--text);border:1px solid var(--line)}
 #get{margin-top:24px;text-align:center}
 #get p{color:var(--mute);font-size:.9rem;margin:8px 0 0}
 footer{color:var(--mute);font-size:.8rem;text-align:center;margin-top:20px}
+
+#cv{max-width:100%;max-height:60vh;display:block;margin:0 auto}
+button.on{outline:2px solid var(--accent)}
+button.sm{padding:8px 12px;font-size:.9rem}
+select,input[type=range]{font-size:.9rem;max-width:150px}
+select{padding:7px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text)}
+label.c{font-size:.9rem;color:var(--mute);display:flex;gap:4px;align-items:center}
 </style>
 </head>
 <body>
@@ -53,163 +65,163 @@ footer{color:var(--mute);font-size:.8rem;text-align:center;margin-top:20px}
   <header class="hero">
     <h1>✂️ Kutout</h1>
     <p class="sub">Remove image backgrounds in seconds. Free, no sign-up, and your photos never leave your device.</p>
-    <div class="cta">
-      <a class="btn" href="#tool">Use online</a>
-      <a class="btn alt" id="apk" href="#get">Download Android app</a>
-    </div>
+    <div class="cta"><a class="btn" href="#tool">Use online</a><a class="btn alt" id="apk" href="#get">Download Android app</a></div>
   </header>
   <div id="tool" style="height:16px"></div>
-
   <div class="card" id="pick">
-    <div id="drop">
-      <div style="font-size:2rem">🖼️</div>
-      <strong>Tap to choose an image</strong>
-      <div style="color:var(--mute)">or drag &amp; drop here</div>
-    </div>
-    <input id="file" type="file" accept="image/*" hidden>
+    <div id="drop"><div style="font-size:2rem">🖼️</div><strong>Tap to choose images</strong>
+      <div style="color:var(--mute)">drag &amp; drop, or paste (Ctrl+V) · select several to batch</div></div>
+    <input id="file" type="file" accept="image/*" multiple hidden>
   </div>
-
   <div class="card" id="stage">
-    <div class="view" id="view"><div id="frame"><img id="img" alt=""></div></div>
-    <div id="bar"><i></i></div>
-    <div id="msg"></div>
-    <div class="row" id="opts" style="display:none">
-      <span style="color:var(--mute)">Background:</span>
-      <button class="sw on" data-c="" title="Transparent" style="background:repeating-conic-gradient(#ccc 0 25%,#fff 0 50%) 0 0/12px 12px"></button>
-      <button class="sw" data-c="#ffffff" style="background:#fff"></button>
-      <button class="sw" data-c="#000000" style="background:#000"></button>
-      <button class="sw" data-c="#5b5bf0" style="background:#5b5bf0"></button>
-      <input type="color" id="custom" value="#ffcc00" title="Custom color">
-      <button class="sw g" data-a="#ff7e5f" data-b="#feb47b" title="Sunset" style="background:linear-gradient(#ff7e5f,#feb47b)"></button>
-      <button class="sw g" data-a="#43cea2" data-b="#185a9d" title="Ocean" style="background:linear-gradient(#43cea2,#185a9d)"></button>
-      <button class="sw g" data-a="#a18cd1" data-b="#fbc2eb" title="Lavender" style="background:linear-gradient(#a18cd1,#fbc2eb)"></button>
-      <button class="sw g" data-a="#0f2027" data-b="#2c5364" title="Night" style="background:linear-gradient(#0f2027,#2c5364)"></button>
-      <button class="sw g" data-a="#fceabb" data-b="#f8b500" title="Gold" style="background:linear-gradient(#fceabb,#f8b500)"></button>
-      <button class="alt" id="bgimg" type="button">🖼️ Photo background</button>
-      <input type="file" id="bgfile" accept="image/*" hidden>
+    <div class="view" id="view"><canvas id="cv"></canvas></div>
+    <div id="bar"><i></i></div><div id="msg"></div>
+    <div id="opts" style="display:none">
+      <div class="row"><label class="c">Before ⟷ After <input type="range" id="cmp" min="0" max="100" value="0"></label></div>
+      <div class="row"><span style="color:var(--mute)">Touch-up:</span>
+        <button class="alt sm" data-t="erase">Erase</button><button class="alt sm" data-t="restore">Restore</button><button class="alt sm" data-t="move">Move photo</button>
+        <label class="c">Brush <input type="range" id="bs" min="5" max="100" value="30"></label>
+        <button class="alt sm" id="undo">Undo</button></div>
+      <div class="row"><span style="color:var(--mute)">Background:</span>
+        <button class="sw on" data-c="" title="Transparent" style="background:repeating-conic-gradient(#ccc 0 25%,#fff 0 50%) 0 0/12px 12px"></button>
+        <button class="sw" data-c="#ffffff" style="background:#fff"></button><button class="sw" data-c="#000000" style="background:#000"></button><button class="sw" data-c="#5b5bf0" style="background:#5b5bf0"></button>
+        <input type="color" id="custom" value="#ffcc00" title="Custom color">
+        <button class="sw g" data-a="#ff7e5f" data-b="#feb47b" title="Sunset" style="background:linear-gradient(#ff7e5f,#feb47b)"></button>
+        <button class="sw g" data-a="#43cea2" data-b="#185a9d" title="Ocean" style="background:linear-gradient(#43cea2,#185a9d)"></button>
+        <button class="sw g" data-a="#a18cd1" data-b="#fbc2eb" title="Lavender" style="background:linear-gradient(#a18cd1,#fbc2eb)"></button>
+        <button class="sw g" data-a="#0f2027" data-b="#2c5364" title="Night" style="background:linear-gradient(#0f2027,#2c5364)"></button>
+        <button class="sw g" data-a="#fceabb" data-b="#f8b500" title="Gold" style="background:linear-gradient(#fceabb,#f8b500)"></button>
+        <button class="alt sm" id="bgimg" type="button">🖼️ Photo</button><input type="file" id="bgfile" accept="image/*" hidden>
+        <label class="c">Zoom <input type="range" id="zm" min="100" max="300" value="100"></label></div>
+      <div class="row"><span style="color:var(--mute)">Effects:</span>
+        <label class="c"><input type="checkbox" id="shadow">Shadow</label><label class="c"><input type="checkbox" id="outline">Sticker outline</label></div>
+      <div class="row"><span style="color:var(--mute)">Export:</span>
+        <select id="fmt"><option value="png">PNG</option><option value="jpg">JPG</option></select>
+        <select id="size"><option value="orig">Original size</option><option value="sq">Square 1080</option><option value="story">Story 1080×1920</option><option value="pass">Passport 413×531</option></select>
+        <label class="c"><input type="checkbox" id="trim">Crop to subject</label></div>
     </div>
-    <div class="row">
-      <button id="dl" disabled>Download PNG</button>
-      <button class="alt" id="again">New image</button>
-    </div>
+    <div class="row"><button id="dl" disabled>Download</button><button class="alt" id="again">New image</button></div>
   </div>
   <div class="feat">
     <div><b>🔒 Private</b>Everything runs on your device. Nothing is uploaded.</div>
-    <div><b>🎨 Any background</b>Transparent, solid colors, gradients or your own photo.</div>
+    <div><b>🖌️ Touch-up &amp; effects</b>Fix edges, add backgrounds, shadows and sticker outlines.</div>
     <div><b>📱 Web &amp; Android</b>Use it in any browser or install the app.</div>
   </div>
-  <div class="card" id="get">
-    <strong>Get the Android app</strong>
+  <div class="card" id="get"><strong>Get the Android app</strong>
     <p>Download the APK, open it, and allow “install from unknown sources” if asked. On iPhone, open this page in Safari → Share → Add to Home Screen.</p>
-    <div class="cta" style="margin-top:12px"><a class="btn" id="apk2" href="#">Download APK</a></div>
-    <p id="apkinfo"></p>
-    <p>Updating? Delete any older Kutout APK from your Downloads first, so you install the newest one.</p>
-  </div>
-  <footer>© 2026 Kart Production. All rights reserved.<br>Powered by @imgly/background-removal (AGPL-3.0) · <a id="src" href="https://github.com/imgly/background-removal-js" style="color:inherit">Source</a></footer>
+    <div class="cta" style="margin-top:12px"><a class="btn" id="apk2" href="#">Download APK</a></div><p id="apkinfo"></p></div>
+  <footer>© 2026 Kart Production. All rights reserved.<br>Powered by @imgly/background-removal (AGPL-3.0) · <a id="src" href="https://github.com/kartproduction/kutout" style="color:inherit">Source</a> · <a href="privacy.html" style="color:inherit">Privacy</a></footer>
 </main>
-
 <script type="module">
-const $ = s => document.querySelector(s);
-// APK link: auto-detected on GitHub Pages (user.github.io/repo). Otherwise set it manually below.
-let APK_URL='https://github.com/kartproduction/Kutout/releases/latest/download/Kutout.apk';  // e.g. 'https://github.com/USER/REPO/releases/latest/download/Kutout.apk'
-$('#src').href='https://github.com/kartproduction/Kutout';
-if(APK_URL){$('#apk2').href=APK_URL;$('#apk').href=APK_URL}
-// Always link to the newest release (shows its version so you can tell it is the new one)
-fetch('https://api.github.com/repos/kartproduction/Kutout/releases/latest').then(r=>r.ok?r.json():null).then(j=>{
-  if(!j)return;
-  const list=j.assets||[];
-  const a=list.find(x=>/^Kutout-v.*\.apk$/.test(x.name))||list.find(x=>x.name.endsWith('.apk'));
-  if(!a)return;
-  APK_URL=a.browser_download_url;
-  $('#apk2').href=APK_URL;$('#apk').href=APK_URL;
-  $('#apk').textContent='Download Android app ('+j.tag_name+')';
-  $('#apk2').textContent='Download APK ('+j.tag_name+')';
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+let APK_URL='https://github.com/kartproduction/kutout/releases/latest/download/Kutout.apk';
+$('#apk2').href=APK_URL;$('#apk').href=APK_URL;
+fetch('https://api.github.com/repos/kartproduction/kutout/releases/latest').then(r=>r.ok?r.json():null).then(j=>{
+  const a=j&&(j.assets||[]).find(x=>/^Kutout-v.*\.apk$/.test(x.name));if(!a)return;
+  $('#apk2').href=$('#apk').href=a.browser_download_url;
+  $('#apk').textContent='Download Android app ('+j.tag_name+')';$('#apk2').textContent='Download APK ('+j.tag_name+')';
   $('#apkinfo').textContent='Latest version '+j.tag_name+' · released '+new Date(j.published_at).toLocaleDateString();
 }).catch(()=>{});
-if(window.Capacitor?.isNativePlatform?.()){document.querySelector('.cta').style.display='none';$('#get').style.display='none'}
-const drop=$('#drop'), file=$('#file'), img=$('#img'), msg=$('#msg'), bar=$('#bar'), fill=$('#bar i');
-let cutout=null, bgColor='', origName='image';
+const NATIVE=!!window.Capacitor?.isNativePlatform?.();
+if(NATIVE){$('.cta').style.display='none';$('#get').style.display='none'}
+const LIB='https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/+esm';
+const cv=$('#cv'),msg=$('#msg'),bar=$('#bar'),fill=$('#bar i');
+let orig,cut,bg=null,zoom=1,ox=0,oy=0,tool='',cmp=0,name='image',undo=[],busy=false,last=null,drag=null,raf=0;
 
-drop.onclick=()=>file.click();
-drop.ondragover=e=>{e.preventDefault();drop.classList.add('over')};
-drop.ondragleave=()=>drop.classList.remove('over');
-drop.ondrop=e=>{e.preventDefault();drop.classList.remove('over');if(e.dataTransfer.files[0])run(e.dataTransfer.files[0])};
-file.onchange=()=>file.files[0]&&run(file.files[0]);
-$('#again').onclick=()=>{$('#stage').style.display='none';$('#pick').style.display='block';file.value='';cutout=null};
+// ---------- compositing ----------
+function bbox(){const d=cut.getContext('2d').getImageData(0,0,cut.width,cut.height).data;let x0=1e9,y0=1e9,x1=-1,y1=-1;
+  for(let y=0;y<cut.height;y++)for(let i=0;i<cut.width;i++)if(d[(y*cut.width+i)*4+3]>10){if(i<x0)x0=i;if(i>x1)x1=i;if(y<y0)y0=y;if(y>y1)y1=y}
+  return x1<0?[0,0,cut.width,cut.height]:[x0,y0,x1-x0+1,y1-y0+1]}
+function sil(){const c=document.createElement('canvas');c.width=cut.width;c.height=cut.height;const x=c.getContext('2d');x.drawImage(cut,0,0);x.globalCompositeOperation='source-in';x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);return c}
+function compose(w,h,trim){
+  const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');
+  if(bg?.kind==='color'){x.fillStyle=bg.v;x.fillRect(0,0,w,h)}
+  else if(bg?.kind==='grad'){const g=x.createLinearGradient(0,0,0,h);g.addColorStop(0,bg.a);g.addColorStop(1,bg.b);x.fillStyle=g;x.fillRect(0,0,w,h)}
+  else if(bg?.kind==='img'){const k=Math.max(w/bg.bmp.width,h/bg.bmp.height)*zoom,dw=bg.bmp.width*k,dh=bg.bmp.height*k;x.drawImage(bg.bmp,(w-dw)/2+ox*w,(h-dh)/2+oy*h,dw,dh)}
+  const [sx,sy,sw,sh]=trim?bbox():[0,0,cut.width,cut.height],k=Math.max(w/sw,h/sh),dw=sw*k,dh=sh*k,dx=(w-dw)/2,dy=(h-dh)/2;
+  if($('#outline').checked){const r=Math.max(2,dw*.012),s=sil();for(let a=0;a<16;a++)x.drawImage(s,sx,sy,sw,sh,dx+Math.cos(a*Math.PI/8)*r,dy+Math.sin(a*Math.PI/8)*r,dw,dh)}
+  if($('#shadow').checked){x.shadowColor='rgba(0,0,0,.5)';x.shadowBlur=dw*.04;x.shadowOffsetY=dw*.015}
+  x.drawImage(cut,sx,sy,sw,sh,dx,dy,dw,dh);return c}
+function render(){cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>{if(!cut)return;
+  const s=Math.min(1,1000/Math.max(cut.width,cut.height)),w=Math.round(cut.width*s),h=Math.round(cut.height*s),c=compose(w,h,false);
+  cv.width=w;cv.height=h;const x=cv.getContext('2d');x.drawImage(c,0,0);
+  if(cmp>0){const cw=w*cmp/100;x.save();x.beginPath();x.rect(0,0,cw,h);x.clip();x.drawImage(orig,0,0,w,h);x.restore();x.fillStyle='#fff';x.fillRect(cw-1,0,2,h)}})}
 
-let bg=null; // {kind:'color',v} | {kind:'grad',a,b} | {kind:'img',bmp,url}
-const frame=$('#frame');
-function mark(el){document.querySelectorAll('.sw').forEach(x=>x.classList.toggle('on',x===el))}
-function showBg(){
-  frame.style.background='';
-  if(!bg)return;
-  if(bg.kind==='color')frame.style.background=bg.v;
-  else if(bg.kind==='grad')frame.style.background=`linear-gradient(180deg,${bg.a},${bg.b})`;
-  else frame.style.background=`url(${bg.url}) center/cover no-repeat`;
-}
-document.querySelectorAll('.sw:not(.g)').forEach(el=>el.onclick=()=>{bg=el.dataset.c?{kind:'color',v:el.dataset.c}:null;mark(el);showBg()});
-document.querySelectorAll('.sw.g').forEach(el=>el.onclick=()=>{bg={kind:'grad',a:el.dataset.a,b:el.dataset.b};mark(el);showBg()});
-$('#custom').oninput=e=>{bg={kind:'color',v:e.target.value};mark(null);showBg()};
+// ---------- brushes / move ----------
+const rad=()=>$('#bs').value/2000*Math.max(cut.width,cut.height);
+const pt=e=>{const r=cv.getBoundingClientRect();return[(e.clientX-r.left)/r.width*cut.width,(e.clientY-r.top)/r.height*cut.height]};
+function stamp(p){const x=cut.getContext('2d');x.save();x.beginPath();x.arc(p[0],p[1],rad(),0,7);
+  if(tool==='erase'){x.globalCompositeOperation='destination-out';x.fill()}else{x.clip();x.drawImage(orig,0,0,cut.width,cut.height)}x.restore();render()}
+function push(){undo.push(cut.getContext('2d').getImageData(0,0,cut.width,cut.height));if(undo.length>6)undo.shift()}
+cv.onpointerdown=e=>{if(!cut||!tool)return;cv.setPointerCapture(e.pointerId);if(tool==='move')drag=[e.clientX,e.clientY];else{push();last=pt(e);stamp(last)}};
+cv.onpointermove=e=>{if(drag){const r=cv.getBoundingClientRect();ox+=(e.clientX-drag[0])/r.width;oy+=(e.clientY-drag[1])/r.height;drag=[e.clientX,e.clientY];render()}
+  else if(last){const p=pt(e),n=Math.ceil(Math.hypot(p[0]-last[0],p[1]-last[1])/(rad()/3))||1;for(let i=1;i<=n;i++)stamp([last[0]+(p[0]-last[0])*i/n,last[1]+(p[1]-last[1])*i/n]);last=p}};
+cv.onpointerup=cv.onpointercancel=()=>{drag=last=null};
+$$('[data-t]').forEach(b=>b.onclick=()=>{tool=tool===b.dataset.t?'':b.dataset.t;$$('[data-t]').forEach(x=>x.classList.toggle('on',x.dataset.t===tool));cv.style.touchAction=tool?'none':'auto';cv.style.cursor=tool?'crosshair':''});
+$('#undo').onclick=()=>{const d=undo.pop();if(d){cut.getContext('2d').putImageData(d,0,0);render()}};
+$('#cmp').oninput=e=>{cmp=+e.target.value;render()};
+$('#zm').oninput=e=>{zoom=e.target.value/100;render()};
+['shadow','outline'].forEach(i=>$('#'+i).onchange=render);
+
+// ---------- backgrounds ----------
+const mark=el=>$$('.sw').forEach(x=>x.classList.toggle('on',x===el));
+$$('.sw:not(.g)').forEach(el=>el.onclick=()=>{bg=el.dataset.c?{kind:'color',v:el.dataset.c}:null;mark(el);render()});
+$$('.sw.g').forEach(el=>el.onclick=()=>{bg={kind:'grad',a:el.dataset.a,b:el.dataset.b};mark(el);render()});
+$('#custom').oninput=e=>{bg={kind:'color',v:e.target.value};mark(null);render()};
 $('#bgimg').onclick=()=>$('#bgfile').click();
-$('#bgfile').onchange=async e=>{
-  const f=e.target.files[0];if(!f)return;
-  try{bg={kind:'img',bmp:await createImageBitmap(f),url:URL.createObjectURL(f)};mark(null);showBg()}
-  catch(_){alert('Could not open that image.')}
-  e.target.value='';
-};
+$('#bgfile').onchange=async e=>{const f=e.target.files[0];if(!f)return;
+  try{bg={kind:'img',bmp:await createImageBitmap(f)};ox=oy=0;zoom=1;$('#zm').value=100;mark(null);render()}catch(_){alert('Could not open that image.')}e.target.value=''};
 
-async function run(f){
-  if(!f.type.startsWith('image/')){alert('Please choose an image file.');return}
-  origName=f.name.replace(/\.[^.]+$/,'');
-  $('#pick').style.display='none';$('#stage').style.display='block';
-  $('#opts').style.display='none';$('#dl').disabled=true;
-  img.src=URL.createObjectURL(f);
-  bar.style.display='block';fill.style.width='3%';
-  msg.textContent='Loading AI model (first time only, ~40 MB)…';
+// ---------- input ----------
+const drop=$('#drop'),file=$('#file');
+drop.onclick=()=>file.click();
+drop.ondragover=e=>{e.preventDefault();drop.classList.add('over')};drop.ondragleave=()=>drop.classList.remove('over');
+drop.ondrop=e=>{e.preventDefault();drop.classList.remove('over');run(e.dataTransfer.files)};
+file.onchange=()=>run(file.files);
+document.addEventListener('paste',e=>{const f=[...(e.clipboardData?.files||[])].filter(f=>f.type.startsWith('image/'));if(f.length)run(f)});
+$('#again').onclick=()=>{$('#stage').style.display='none';$('#pick').style.display='block';file.value='';cut=null};
+async function shrink(f){const b=await createImageBitmap(f),k=Math.min(1,2048/Math.max(b.width,b.height)),c=document.createElement('canvas');
+  c.width=Math.round(b.width*k);c.height=Math.round(b.height*k);c.getContext('2d').drawImage(b,0,0,c.width,c.height);return new Promise(r=>c.toBlob(r,'image/png'))}
+async function hasModels(){try{return (await fetch(new URL('models/resources.json',location.href),{method:'HEAD'})).ok}catch(_){return false}}
+
+async function run(files){
+  files=[...files].filter(f=>f.type.startsWith('image/'));if(!files.length||busy)return;busy=true;
+  $('#pick').style.display='none';$('#stage').style.display='block';$('#opts').style.display='none';$('#dl').disabled=true;
+  cut=null;undo=[];cv.width=cv.height=1;bar.style.display='block';fill.style.width='3%';
   try{
-    const {removeBackground}=await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/+esm');
-    cutout=await removeBackground(f,{
-      progress:(key,cur,total)=>{
-        if(total){fill.style.width=Math.max(3,Math.round(cur/total*100))+'%'}
-        msg.textContent=key.startsWith('fetch')?'Downloading model…':'Removing background…';
-      }
-    });
-    img.src=URL.createObjectURL(cutout);
+    const {removeBackground}=await import(LIB);
+    const cfg={progress:(k,c,t)=>{if(t)fill.style.width=Math.max(3,Math.round(c/t*100))+'%'}};
+    if(await hasModels())cfg.publicPath=new URL('models/',location.href).href;
+    for(let i=0;i<files.length;i++){
+      const f=files[i];name=f.name.replace(/\.[^.]+$/,'')||'image';
+      msg.textContent=files.length>1?`Image ${i+1} of ${files.length}…`:'Removing background (first time downloads the AI model, ~40 MB)…';
+      const b=await shrink(f),out=await removeBackground(b,cfg);
+      orig=await createImageBitmap(b);cut=document.createElement('canvas');cut.width=orig.width;cut.height=orig.height;
+      cut.getContext('2d').drawImage(await createImageBitmap(out),0,0,cut.width,cut.height);
+      if(files.length>1)await save(await finalBlob(),`${name}-kutout.${ext()}`);
+    }
     fill.style.width='100%';setTimeout(()=>bar.style.display='none',400);
-    msg.textContent='Done!';
-    $('#opts').style.display='flex';$('#dl').disabled=false;
-  }catch(err){
-    console.error(err);bar.style.display='none';
-    msg.textContent=(location.protocol==='file:'||location.protocol==='content:'?'Open this app from its hosted link (https://…), not from a file on your phone. ':'Something went wrong. Check your internet connection and try again. ')+'('+(err&&err.message||err)+')';
-  }
+    msg.textContent=files.length>1?`Done – ${files.length} images saved. Last one shown for editing.`:'Done! Use the tools below to fine-tune.';
+    $('#opts').style.display='block';$('#dl').disabled=false;render();
+  }catch(err){console.error(err);bar.style.display='none';
+    msg.textContent=(['file:','content:'].includes(location.protocol)?'Open this app from its hosted link (https://…), not from a file on your phone. ':'Something went wrong. Check your internet connection and try again. ')+'('+(err&&err.message||err)+')'}
+  busy=false;
 }
 
+// ---------- export ----------
+const SIZES={orig:null,sq:[1080,1080],story:[1080,1920],pass:[413,531]};
+const ext=()=>$('#fmt').value==='jpg'?'jpg':'png';
 async function finalBlob(){
-  if(!bg)return cutout;
-  const bmp=await createImageBitmap(cutout), w=bmp.width, h=bmp.height;
-  const c=document.createElement('canvas');c.width=w;c.height=h;
-  const x=c.getContext('2d');
-  if(bg.kind==='color'){x.fillStyle=bg.v;x.fillRect(0,0,w,h)}
-  else if(bg.kind==='grad'){const g=x.createLinearGradient(0,0,0,h);g.addColorStop(0,bg.a);g.addColorStop(1,bg.b);x.fillStyle=g;x.fillRect(0,0,w,h)}
-  else{const k=Math.max(w/bg.bmp.width,h/bg.bmp.height),dw=bg.bmp.width*k,dh=bg.bmp.height*k;x.drawImage(bg.bmp,(w-dw)/2,(h-dh)/2,dw,dh)}
-  x.drawImage(bmp,0,0);
-  return new Promise(r=>c.toBlob(r,'image/png'));
-}
-
-$('#dl').onclick=async()=>{
-  const blob=await finalBlob(), name=origName+'-kutout.png';
-  const cap=window.Capacitor;
-  if(cap?.isNativePlatform?.()){            // Android app: save to cache + open share sheet
-    try{
-      const b64=await new Promise(r=>{const fr=new FileReader();fr.onload=()=>r(fr.result.split(',')[1]);fr.readAsDataURL(blob)});
-      const {Filesystem,Share}=cap.Plugins;
-      const w=await Filesystem.writeFile({path:name,data:b64,directory:'CACHE'});
-      await Share.share({title:name,url:w.uri});
-      return;
-    }catch(e){console.error(e)}
-  }
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();
-};
+  const z=SIZES[$('#size').value],t=$('#trim').checked;let w=cut.width,h=cut.height;
+  if(z)[w,h]=z;else if(t){const b=bbox();w=b[2];h=b[3]}
+  let c=compose(w,h,t);
+  if(ext()==='jpg'){const j=document.createElement('canvas');j.width=w;j.height=h;const x=j.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,w,h);x.drawImage(c,0,0);c=j}
+  return new Promise(r=>c.toBlob(r,ext()==='jpg'?'image/jpeg':'image/png',.95))}
+async function save(blob,fn){
+  if(NATIVE){try{const b64=await new Promise(r=>{const fr=new FileReader();fr.onload=()=>r(fr.result.split(',')[1]);fr.readAsDataURL(blob)});
+    const {Filesystem,Share}=window.Capacitor.Plugins,w=await Filesystem.writeFile({path:fn,data:b64,directory:'CACHE'});await Share.share({title:fn,url:w.uri});return}catch(e){console.error(e)}}
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fn;a.click();await new Promise(r=>setTimeout(r,300))}
+$('#dl').onclick=async()=>save(await finalBlob(),`${name}-kutout.${ext()}`);
 </script>
 </body>
 </html>

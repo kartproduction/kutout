@@ -7,6 +7,11 @@
 - 🍎 **iPhone:** open the website in Safari → Share → Add to Home Screen
 
 ## Features
+- Touch-up brushes (erase/restore), before/after slider, paste support, batch processing
+- Photo backgrounds with move/zoom, gradients, shadow and sticker outline
+- Export PNG/JPG, crop to subject, Passport / Instagram sizes
+
+## Old list
 - AI background removal that runs fully on your device
 - Transparent, solid color, gradient or your own photo as the background
 - Download as PNG
@@ -29,3 +34,6 @@ Copyright © 2026 Kart Production. The code is licensed under the **GNU AGPL-3.0
 The names **Kutout**, **Kart Production**, **Kasign**, **Kartory**, **Kalendar by Kasign**, **Kauncher**, **The Change Voice** and **Hope For A Change**, and their logos, may not be used for other projects without written permission. Forks must use a different name and branding.
 
 Background removal powered by @imgly/background-removal (AGPL-3.0, © IMG.LY GmbH).
+
+## Permanent signing key
+Add secrets `KEYSTORE_BASE64`, `KEYSTORE_PASSWORD`, `KEY_ALIAS` (Settings → Secrets and variables → Actions). Builds then sign the APK and `Kutout.aab` (for Google Play) with the same key, so new versions install over old ones.
