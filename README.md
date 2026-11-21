@@ -9,7 +9,8 @@
 ## Features
 - Touch-up brushes (erase/restore), before/after slider, paste support, batch processing
 - Photo backgrounds with move/zoom, gradients, shadow and sticker outline
-- Export PNG/JPG, crop to subject, Passport / Instagram sizes
+- Text layers (fonts, colors, shadow, behind-subject) for poster making
+- Export PNG/JPG, crop to subject, Passport / Instagram / A4 poster sizes
 
 ## Old list
 - AI background removal that runs fully on your device
@@ -37,3 +38,6 @@ Background removal powered by @imgly/background-removal (AGPL-3.0, © IMG.LY Gmb
 
 ## Permanent signing key
 Add secrets `KEYSTORE_BASE64`, `KEYSTORE_PASSWORD`, `KEY_ALIAS` (Settings → Secrets and variables → Actions). Builds then sign the APK and `Kutout.aab` (for Google Play) with the same key, so new versions install over old ones.
+
+## Poster tools
+Templates (Sale, Night event, Minimal, Birthday, YouTube), text layers with Google Fonts (online) and device fonts, logo/sticker layers, and **Save project / Open project** (`.json`) to keep editing later.
