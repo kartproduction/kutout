@@ -127,7 +127,7 @@ label.c{font-size:.9rem;color:var(--mute);display:flex;gap:4px;align-items:cente
   <div class="card" id="get"><strong>Get the Android app</strong>
     <p>Download the APK, open it, and allow “install from unknown sources” if asked. On iPhone, open this page in Safari → Share → Add to Home Screen.</p>
     <div class="cta" style="margin-top:12px"><a class="btn" id="apk2" href="#">Download APK</a></div><p id="apkinfo"></p></div>
-  <footer>© 2026 Kart Production. All rights reserved.<br>Powered by @imgly/background-removal (AGPL-3.0) · <a id="src" href="https://github.com/kartproduction/kutout" style="color:inherit">Source</a> · <a href="privacy.html" style="color:inherit">Privacy</a></footer>
+  <footer>© <span class="yr">2026</span> Kart Production. All rights reserved.<br>Powered by @imgly/background-removal (AGPL-3.0) · <a id="src" href="https://github.com/kartproduction/kutout" style="color:inherit">Source</a> · <a href="privacy.html" style="color:inherit">Privacy</a></footer>
 </main>
 <script type="module">
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -139,6 +139,7 @@ fetch('https://api.github.com/repos/kartproduction/kutout/releases/latest').then
   $('#apk').textContent='Download Android app ('+j.tag_name+')';$('#apk2').textContent='Download APK ('+j.tag_name+')';
   $('#apkinfo').textContent='Latest version '+j.tag_name+' · released '+new Date(j.published_at).toLocaleDateString();
 }).catch(()=>{});
+document.querySelectorAll('.yr').forEach(e=>{const y=new Date().getFullYear();e.textContent=y>2026?'2026–'+y:'2026'});
 const NATIVE=!!window.Capacitor?.isNativePlatform?.();
 if(NATIVE){$('.cta').style.display='none';$('#get').style.display='none'}
 const LIB='https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/+esm';
