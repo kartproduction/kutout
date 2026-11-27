@@ -42,3 +42,7 @@ Add secrets `KEYSTORE_BASE64`, `KEYSTORE_PASSWORD`, `KEY_ALIAS` (Settings → Se
 ## Poster tools
 12 templates (7 portrait, 5 landscape), shapes (box, circle, banner), text outline/rotate, subject position slider. Photo filters (B&W, sepia, vivid, warm, cool, fade + brightness/contrast/blur), grid and snap guides, rotation for text/logos/shapes, duplicate, and front/back ordering. Export: PNG, JPG, WebP, PDF, Word (.docx), SVG, Text (.txt).
 Templates (Sale, Night event, Minimal, Birthday, YouTube), text layers with Google Fonts (online) and device fonts, logo/sticker layers, and **Save project / Open project** (`.json`) to keep editing later.
+
+## Offline use
+The build step `bundle-offline.sh` downloads the AI model and the background-removal library and puts them next to the site (`models/`, `vendor/rb.js`). The Android app includes them. The website keeps them after the first visit (`sw.js`). If that step fails, Kutout falls back to loading them from the internet.
+Set **Settings → Pages → Source → GitHub Actions** so `pages.yml` publishes the site with these files.
