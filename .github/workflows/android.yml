@@ -15,15 +15,34 @@ jobs:
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: 17 }
       - run: npm install
-      - run: mkdir -p www && cp index.html icon-192.png icon-512.png apple-touch-icon.png manifest.webmanifest www/
+      - run: mkdir -p www && cp index.html privacy.html icon-192.png icon-512.png apple-touch-icon.png manifest.webmanifest example-photo.jpg example-cutout.png www/
+      - name: Bundle AI model and library into the app (offline)
+        continue-on-error: true
+        run: bash bundle-offline.sh
       - run: npx cap add android
       - run: pip install pillow
       - run: python make_icons.py
       - run: test -f android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_background.png && echo "Kutout icons OK"
+      - run: sed -i "s/versionCode 1/versionCode ${{ github.run_number }}/; s/versionName \"1.0\"/versionName \"1.${{ github.run_number }}\"/" android/app/build.gradle
       - run: npx cap sync android
-      - run: cd android && chmod +x gradlew && ./gradlew assembleDebug
-      - run: |
+      - run: cd android && chmod +x gradlew && ./gradlew assembleDebug bundleRelease
+      - name: Sign
+        env:
+          KS_B64: ${{ secrets.KEYSTORE_BASE64 }}
+          KS_PASS: ${{ secrets.KEYSTORE_PASSWORD }}
+          KS_ALIAS: ${{ secrets.KEY_ALIAS }}
+        run: |
           cp android/app/build/outputs/apk/debug/app-debug.apk Kutout.apk
+          cp android/app/build/outputs/bundle/release/app-release.aab Kutout.aab
+          if [ -n "$KS_B64" ]; then
+            echo "$KS_B64" | base64 -d > ks.jks
+            BT=$(ls -d $ANDROID_HOME/build-tools/* | sort -V | tail -1)
+            $BT/apksigner sign --ks ks.jks --ks-pass env:KS_PASS --ks-key-alias "$KS_ALIAS" Kutout.apk
+            jarsigner -keystore ks.jks -storepass "$KS_PASS" Kutout.aab "$KS_ALIAS"
+            rm ks.jks
+          else
+            echo "::warning::No signing key set - APK uses a temporary key and cannot update in place"
+          fi
           cp Kutout.apk Kutout-v${{ github.run_number }}.apk
       - uses: softprops/action-gh-release@v2
         with:
@@ -32,3 +51,4 @@ jobs:
           files: |
             Kutout.apk
             Kutout-v${{ github.run_number }}.apk
+            Kutout.aab
